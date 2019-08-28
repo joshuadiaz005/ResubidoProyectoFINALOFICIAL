@@ -426,47 +426,6 @@ public class Main {
                 return "";
             });
 
-            get("/update/profile", (request, response) -> {
-                Map<String, Object> model = new HashMap<>();
-                model.put("titulo", "Actualización de Perfil");
-
-                Usuario usuario = request.session(true).attribute("usuario");
-                if (usuario == null) {
-                    response.redirect("/user/signIn");
-                } else {
-                    model.put("usuarioCompleto", usuario);
-                    model.put("usuario", usuario.getUsername());
-                }
-                model.put("usuarioUpdate", usuario);
-
-                return new ModelAndView(model, "UpdateUser.ftl");
-            }, freeMarkerEngine);
-
-            post("/update/profile", (request, response) -> {
-                if (request.raw().getAttribute("org.eclipse.jetty.multipartConfig") == null) {
-                    MultipartConfigElement multipartConfigElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
-                    request.raw().setAttribute("org.eclipse.jetty.multipartConfig", multipartConfigElement);
-                }
-                Map<String, Object> model = new HashMap<>();
-                model.put("titulo", "Update Profile");
-
-                Usuario usuario = request.session(true).attribute("usuario");
-                usuario.setName(request.queryParams("name"));
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                usuario.setDateOfBirth(formatter.parse(request.queryParams("dateOfBirth")).getTime());
-                usuario.setEmail(request.queryParams("email"));
-                usuario.setOccupation(request.queryParams("occupation"));
-                usuario.setPhoneNumber(request.queryParams("phoneNumber"));
-
-                if (usuario == null) {
-                    response.redirect("/user/signIn");
-                }
-
-                response.redirect("/");
-                return "";
-            });
-
-
             get("/show/paste", (request, response) -> {
                 Map<String, Object> model = new HashMap<>();
                 Usuario usuario = request.session(true).attribute("usuario");
@@ -555,7 +514,7 @@ public class Main {
         if (processBuilder.environment().get("PORT") != null) {
             return Integer.parseInt(processBuilder.environment().get("PORT"));
         }
-        return 4567;
+        return 5678;
     }
 
 
